@@ -20,7 +20,7 @@ class Nav extends mixin(HTMLElement) {
     super();
     this.addShadow({
       sheets: ["bootstrap/core", "bootstrap/custom", "styles/utils"],
-      html: "nav",
+      html: "components/nav",
     });
     composeSubs(this);
     // Patch-up added nav links.

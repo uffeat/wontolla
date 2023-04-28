@@ -13,12 +13,22 @@ def build():
     """Builds assets file."""
     
     global assets
-    # Build HTML assets.
-    for path in Path(f"{project}/src/html/").glob("*.*"):
+
+    # Build components html assets.
+    for path in Path(f"{project}/src/html/components/").glob("*.*"):
         if path.suffix == ".html":
-            key = path.name
+            key = f"components/{path.name}"
             value = path.read_text()
             assets[key] = value
+
+    # Build pages html assets.
+    for path in Path(f"{project}/src/html/pages/").glob("*.*"):
+        if path.suffix == ".html":
+            key = f"pages/{path.name}"
+            value = path.read_text()
+            assets[key] = value
+
+
 
     # NOTE: Storage of stylesheet CSS in `assets` is intended for constructing 
     # stylesheets to be added to shadow roots. 
@@ -27,22 +37,21 @@ def build():
     # as the imported sheet's `default` can be adopted directly to a shadow root.
     # However, support for CSS module scripts is still limited to Chromium-based browsers...
 
-
-    # Build Bootstrap CSS assets.
+    # Build Bootstrap css assets.
     for path in Path(f"{project}/src/libs/bootstrap/").glob("*.*"):
         if path.suffix == ".css":
             key = f"bootstrap/{path.name}"
             value = path.read_text()
             assets[key] = value
 
-    # Build UiKit CSS assets.
+    # Build UiKit css assets.
     for path in Path(f"{project}/src/libs/uikit/").glob("*.*"):
         if path.suffix == ".css":
             key = f"uikit/{path.name}"
             value = path.read_text()
             assets[key] = value
 
-    # Build app CSS assets.
+    # Build app css assets.
     for path in Path(f"{project}/src/styles/").glob("*.*"):
         if path.suffix == ".css" and path.name != "app.css":
             key = f"styles/{path.name}"

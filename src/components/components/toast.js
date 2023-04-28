@@ -18,7 +18,7 @@ const showToast = (content, kwargs = {}) => {
     );
   }
 
-  const component = createElementFromHtml("toast", { parent: container });
+  const component = createElementFromHtml("components/toast", { parent: container });
   composeSubs(component);
   
   setStyle(component.subs.headline, "text", styleName);

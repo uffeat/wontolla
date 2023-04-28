@@ -7,7 +7,7 @@ class Alert extends mixin(HTMLElement) {
   #styleName;
   constructor() {
     super();
-    composeRoot(this, { html: "alert", cssClasses: ["alert"] });
+    composeRoot(this, { html: "components/alert", cssClasses: ["alert"] });
     composeSubs(this);
     // Set defaults.
     this.styleName = "info";

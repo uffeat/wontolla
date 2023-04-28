@@ -1,15 +1,16 @@
 import {onhashchange, routes} from './router.js'
+import { component as home } from '../pages/home.js';
+import { component as about } from '../pages/about.js';
 
 
 routes.add("about", (kwargs, ...args) => {
-  console.log(
-    `about route running with kwargs '${kwargs}' and args '${args}'.`
-  );
+  document.main.clear().append(about)    
 });
 
 
 routes.add("home", (kwargs, ...args) => {
-  console.log(`home route running with kwargs '${kwargs}' and args '${args}'.`);
+  document.main.clear().append(home)
+
 });
 
 routes.add("login", (kwargs, ...args) => {

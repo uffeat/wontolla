@@ -12,7 +12,7 @@ class Navbar extends mixin(HTMLElement) {
     /** Creates shadow, inits compositions, adds event handlers. */
     this.addShadow({
       sheets: ["bootstrap/core", "bootstrap/custom", "styles/utils"],
-      html: "navbar",
+      html: "components/navbar",
     });
     composeSubs(this);
     // Init Bootstrap component. Collapse control via `data-bs-target` doesn't 
@@ -45,7 +45,7 @@ class Navbar extends mixin(HTMLElement) {
     this.root.get(`slot[name=aux]`).onslotchange = (event) => {
       event.target.assignedNodes().forEach((element) => {
         if (element.tagName === "X-NAV") {
-          element.classes.add("ms-auto");
+          //element.classes.add("ms-auto");
         }
       });
     };

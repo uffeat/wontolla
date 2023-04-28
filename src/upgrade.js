@@ -12,6 +12,7 @@ document.get = document.querySelector;
 document.getAll = document.querySelectorAll;
 
 document.root = document.getElementById("root");
+document.main = document.get('#root > main')
 
 // Html
 
@@ -82,7 +83,6 @@ const createAndAwaitPromise = async (executor) => {
 
 window.createAndAwaitPromise = createAndAwaitPromise;
 
-
 const createElement = (...args) => {
   // Creates HTML element with options to set CSS classes, add children,
   // add to parent, set inner HTML and attach shadow.
@@ -141,9 +141,9 @@ const createElement = (...args) => {
   }
 
   return element;
-}
+};
 
-window.createElement = createElement
+window.createElement = createElement;
 
 const createElementFromHtml = (html, kwargs = {}) => {
   // Creates HTML element from 'outer' HTML with options,
@@ -175,9 +175,9 @@ const createElementFromHtml = (html, kwargs = {}) => {
   }
 
   return element;
-}
+};
 
-window.createElementFromHtml = createElementFromHtml
+window.createElementFromHtml = createElementFromHtml;
 
 // STRUCTURE.
 
@@ -259,10 +259,6 @@ HTMLElement.prototype.addShadow = addShadow;
 
 // PROPS.
 
-
-
-
-
 /** Updates element and element.style properties. */
 HTMLElement.prototype.updateProps = function (props) {
   if (props && Object.keys(props).length >= 0) {
@@ -296,9 +292,9 @@ Object.defineProperty(Node.prototype, "text", {
 
 function setAttr(name, value) {
   if (value) {
-    this.setAttribute(name, value)
+    this.setAttribute(name, value);
   } else {
-    this.removeAttribute(name)
+    this.removeAttribute(name);
   }
 }
 
