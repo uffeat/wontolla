@@ -26,7 +26,7 @@ routes.add("home", () => {
 });
 
 routes.add("login", () => {
-  setPage('login')
+  setPage('login', false)
 });
 
 

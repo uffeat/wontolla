@@ -65,7 +65,7 @@ function parseLocationHash() {
       result.query[key] = decodeURIComponent(value);
     }
   }
-  console.log(`result: ${JSON.stringify(result)}`)
+  //console.log(`result: ${JSON.stringify(result)}`)
   return result;
 }
 

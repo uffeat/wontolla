@@ -1,3 +1,3 @@
-const component = createElement('div.home', {html: 'pages/home'})
+const component = createElement('div.home', {innerHTML: getHtml('pages/home')})
 
 export {component}

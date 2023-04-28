@@ -12,13 +12,10 @@ const styles = [
 const pageClasses = ["container", "max-width-lg", "my-3"];
 
 /** Returns a list of CSS 'col' classes by index. */
-function getColClasses(index = null) {
+const getColClasses = (index) => {
   // TODO: Expand `classes` with indices 1-5.
   const classes = { 3: ["col-md-6", "col-lg-4"] };
-  if (index) {
-    return classes[index];
-  }
-  return Object.values(classes);
+  return classes[index];
 }
 
 /** Validates `style`. */

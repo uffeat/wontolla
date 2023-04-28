@@ -18,10 +18,6 @@ document.main = document.get("#root > main");
 
 /** */
 function getHtml(arg) {
-  if (arg.trim().startsWith("<")) {
-    // `arg` is already HTML
-    return arg;
-  }
   if (!arg.endsWith(".html")) {
     arg = `${arg}.html`;
   }
@@ -142,18 +138,8 @@ Object.defineProperty(HTMLElement.prototype, "parent", {
   configurable: true,
 });
 
-const htmlProp = {
-  get: function () {
-    return this.innerHTML;
-  },
-  set: function (html) {
-    this.innerHTML = getHtml(html);
-  },
-  configurable: true,
-};
 
-Object.defineProperty(HTMLElement.prototype, "html", htmlProp);
-Object.defineProperty(ShadowRoot.prototype, "html", htmlProp);
+
 
 HTMLElement.prototype.clear = function (slot) {
   if (slot === undefined) {

@@ -1,5 +1,5 @@
 /** */
-function composeSubs(component) {
+const composeSubs = (component) => {
   let source;
 
       if (component.root) {
