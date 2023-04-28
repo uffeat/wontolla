@@ -1,7 +1,7 @@
-import { parseLocationHash, removeHash } from "./url.js";
-import { FuncReg } from "./func-reg.js";
+import { parseLocationHash, removeHash } from "../utils/url.js";
+import { FuncStore } from "../utils/func-store.js";
 
-const routes = new FuncReg();
+const routes = new FuncStore();
 
 const onhashchange = (event) => {
   const result = parseLocationHash();

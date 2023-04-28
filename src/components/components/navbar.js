@@ -1,9 +1,7 @@
 import { getWidthIndex } from "../../libs/bootstrap/utils/breakpoints.js";
-import { mixin } from "../../utils/mixin.js";
+import { mixin } from "../utils/mixin.js";
 import * as _nav from "../components/nav.js";
 import { composeSubs } from "../compositions/subs.js";
-
-
 
 /** Bootstrap-based responsive navbar container component with two tiers of nav bars. 
  * Works with the nav component. */

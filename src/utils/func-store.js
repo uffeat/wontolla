@@ -1,4 +1,4 @@
-class FuncReg {
+class FuncStore {
   #reg = {};
   constructor() {
     this._reg = {}
@@ -38,4 +38,4 @@ class FuncReg {
   }
 }
 
-export { FuncReg };
+export { FuncStore };

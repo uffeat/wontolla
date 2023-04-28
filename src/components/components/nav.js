@@ -1,4 +1,4 @@
-import { mixin } from "../../utils/mixin.js";
+import { mixin } from "../utils/mixin.js";
 import { composeSubs } from "../compositions/subs.js";
 import { NavLinks } from "../compositions/nav-links.js";
 

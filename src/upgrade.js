@@ -1,4 +1,4 @@
-import { assets } from "../assets/_assets.js";
+import { assets } from "./assets/_assets.js";
 
 // ALIASES
 

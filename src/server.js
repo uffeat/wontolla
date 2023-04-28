@@ -1,5 +1,5 @@
-import { APIORIGIN } from "../config.js";
-import { genSearchParams } from "./url.js";
+import { APIORIGIN } from "./config.js";
+import { genSearchParams } from "./utils/url.js";
 
 
 // TODO: DRY!!!!
