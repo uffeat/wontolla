@@ -2,7 +2,6 @@ import { mixin } from "../utils/mixin.js";
 import { composeSubs } from "../compositions/subs.js";
 import { composeRoot } from "../compositions/root.js";
 import { uid } from "../../utils/uid.js";
-import { getColClasses } from "../../libs/bootstrap/utils/classes.js";
 
 class TextInput extends mixin(HTMLElement) {
   #customInvalidFeedback;
