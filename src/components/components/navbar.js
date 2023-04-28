@@ -1,6 +1,3 @@
-//import * as bootstrap from 'bootstrap'
-import { Collapse } from 'bootstrap'
-
 import { getWidthIndex } from "../../libs/bootstrap/utils/breakpoints.js";
 import { mixin } from "../../utils/mixin.js";
 import * as _nav from "../components/nav.js";
@@ -24,8 +21,7 @@ class Navbar extends mixin(HTMLElement) {
     // work in the shadow, so we need to be able to explicitly control collapse.
     
    
-    this.#bsCollapse = new Collapse(this.subs.navbarCollapse);
-    //this.#bsCollapse = new bootstrap.Collapse(this.subs.navbarCollapse);
+    this.#bsCollapse = new bootstrap.Collapse(this.subs.navbarCollapse);
     
     
     // Set up toggle button.
