@@ -27,7 +27,7 @@ class Nav extends mixin(HTMLElement) {
     this.subs.slot.onslotchange = (event) => {
       event.target.assignedNodes().forEach((element) => {
         if (element.tagName === "A") {
-          element.classes.add("nav-link");
+          element.classList.add("nav-link");
         }
       });
     };
@@ -86,10 +86,10 @@ class Nav extends mixin(HTMLElement) {
   setActiveLink(link) {
     const oldActiveLink = this.get("a.active");
     if (oldActiveLink) {
-      oldActiveLink.classes.remove(...Nav.#ACTIVE_CLASSES);
+      oldActiveLink.classList.remove(...Nav.#ACTIVE_CLASSES);
       oldActiveLink.setAttr("aria-current", null);
     }
-    link.classes.add(...Nav.#ACTIVE_CLASSES);
+    link.classList.add(...Nav.#ACTIVE_CLASSES);
     link.setAttr("aria-current", "page");
     // Detail holds link element and - for conveniece - also directly the link's name.
     this.sendEvent("x-active-change", { link, name: link.name });

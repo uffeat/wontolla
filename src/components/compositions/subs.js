@@ -9,7 +9,7 @@ function composeSubs(component) {
       }
 
       const subs = {};
-      const xElements = source.querySelectorAll(`*[data-x]`);
+      const xElements = source.getAll(`*[data-x]`);
 
       xElements.forEach((element) => {
         subs[element.dataset.x] = element;

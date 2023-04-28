@@ -12,7 +12,7 @@ document.get = document.querySelector;
 document.getAll = document.querySelectorAll;
 
 document.root = document.getElementById("root");
-document.main = document.get('#root > main')
+document.main = document.get("#root > main");
 
 // Html
 
@@ -83,45 +83,14 @@ const createAndAwaitPromise = async (executor) => {
 
 window.createAndAwaitPromise = createAndAwaitPromise;
 
-const createElement = (...args) => {
+const createElement = (arg, props, ...children) => {
   // Creates HTML element with options to set CSS classes, add children,
   // add to parent, set inner HTML and attach shadow.
 
-  const [arg, ...children] = args;
   const [tag, ...classes] = arg.split(".");
 
   const element = document.createElement(tag);
-
-  /*
-  This line uses destructuring assignment and the spread operator to extract certain 
-  properties from the last item in the children array, which is assumed to be an object 
-  containing optional properties for the new element.
-  children.pop(): This removes and returns the last item in the children array. 
-  If the children array is empty, this returns undefined.
-  || {}: If children.pop() returns undefined, this provides a fallback value of an empty object ({}).
-  { html, parent, shadow, ...props }: This uses destructuring assignment to extract the html, 
-  parent, and shadow properties from the last item in the children array, if they exist. 
-  The ...props syntax assigns any remaining properties from the last item to the props variable, 
-  which will be an object containing all remaining properties.
-  Putting it all together, this line of code essentially creates variables html, parent, 
-  and shadow containing the values of those properties from the last item in the children array, 
-  if they exist. It also creates an object props containing all remaining properties from the last item. 
-  If the children array is empty, all variables and props are assigned the value of an empty object ({}).
-  This technique is often used to extract certain properties from an object while ignoring others, 
-  and is commonly used with function arguments to provide default values for missing parameters.
-  */
-  const { html, parent, shadow, ...props } = children.pop() || {};
-
-  if (shadow) {
-    // If `shadow` is a list or a tuple, it contains stylesheet `assets` keys (strings).
-    const sheets = Array.isArray(shadow) ? shadow : null;
-
-    element.addShadow({ html, sheets });
-  } else {
-    if (html) {
-      element.innerHTML = getHtml(html);
-    }
-  }
+  element.updateProps(props);
 
   if (classes.length) {
     element.classList.add(...classes);
@@ -131,21 +100,12 @@ const createElement = (...args) => {
     element.append(...children);
   }
 
-  if (parent) {
-    element.parent = parent;
-  }
-
-  if (Object.keys(props).length) {
-    //
-    Object.assign(element, props);
-  }
-
   return element;
 };
 
 window.createElement = createElement;
 
-const createElementFromHtml = (html, kwargs = {}) => {
+const createElementFromHtml = (html, props = {}) => {
   // Creates HTML element from 'outer' HTML with options,
   // add to parent and attach shadow root.
 
@@ -154,25 +114,16 @@ const createElementFromHtml = (html, kwargs = {}) => {
   html = getHtml(html);
   let element;
 
-  if (shadow) {
-    element = document.createElement("div");
-    // If `shadow` is a list or a tuple, it contains stylesheet `assets` keys (strings).
-    const sheets = Array.isArray(shadow) ? shadow : null;
-    element.addShadow({ html, sheets });
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  if (temp.children.length > 1) {
+    // No single top-level element; add such.
+    element = temp;
   } else {
-    const temp = document.createElement("div");
-    temp.innerHTML = html;
-    if (temp.children.length > 1) {
-      // No single top-level element; add such.
-      element = temp;
-    } else {
-      element = temp.firstElementChild;
-    }
+    element = temp.firstElementChild;
   }
 
-  if (parent) {
-    element.parent = parent;
-  }
+  element.updateProps(props);
 
   return element;
 };
@@ -191,15 +142,18 @@ Object.defineProperty(HTMLElement.prototype, "parent", {
   configurable: true,
 });
 
-Object.defineProperty(HTMLElement.prototype, "html", {
+const htmlProp = {
   get: function () {
     return this.innerHTML;
   },
   set: function (html) {
-    this.innerHTML = html;
+    this.innerHTML = getHtml(html);
   },
   configurable: true,
-});
+};
+
+Object.defineProperty(HTMLElement.prototype, "html", htmlProp);
+Object.defineProperty(ShadowRoot.prototype, "html", htmlProp);
 
 HTMLElement.prototype.clear = function (slot) {
   if (slot === undefined) {
@@ -336,40 +290,6 @@ document.addCss = (cssText) => {
   sheet.replaceSync(cssText);
   document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
 };
-
-const classesProp = {
-  get: function () {
-    if (this._classes) return this._classes;
-    const elementThis = this;
-
-    class Classes {
-      add(...args) {
-        args.forEach((arg) => elementThis.classList.add(arg));
-      }
-      remove(...args) {
-        args.forEach((arg) => elementThis.classList.remove(arg));
-      }
-      clear() {
-        elementThis.classList = "";
-      }
-      has(arg) {
-        elementThis.classList.contains(arg);
-      }
-      toggle(arg) {
-        elementThis.classList.toggle(arg);
-      }
-    }
-    this._classes = new Classes();
-    return this._classes;
-  },
-  set: function (_) {
-    throw `classes is read-only.`;
-  },
-  configurable: true,
-};
-
-Object.defineProperty(HTMLElement.prototype, "classes", classesProp);
-Object.defineProperty(ShadowRoot.prototype, "classes", classesProp);
 
 // EVENTS
 

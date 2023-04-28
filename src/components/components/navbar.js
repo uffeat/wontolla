@@ -32,12 +32,12 @@ class Navbar extends mixin(HTMLElement) {
         this.close();
       }
     };
-    // Patch-up added nav components to suit aux nav.
-    this.root.get(`slot:not([name=aux])`).onslotchange = (event) => {
+    // Patch-up added nav components to suit main nav.
+    this.root.get(`slot[name=main]`).onslotchange = (event) => {
       event.target.assignedNodes().forEach((element) => {
         if (element.tagName === "X-NAV") {
           element.collapsible = true;
-          element.subs.nav.classes.add("py-3", "py-md-0");
+          element.subs.nav.classList.add("py-3", "py-md-0");
         }
       });
     };

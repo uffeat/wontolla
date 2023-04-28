@@ -1,21 +1,36 @@
 import {onhashchange, routes} from './router.js'
-import { component as home } from '../pages/home.js';
-import { component as about } from '../pages/about.js';
+import { pageClasses } from '../libs/bootstrap/utils/classes.js';
+import { removeHash } from '../utils/url.js';
 
 
-routes.add("about", (kwargs, ...args) => {
-  document.main.clear().append(about)    
+const setPage = async (name, hash=true) => {
+  const {component} = await import(`../pages/${name}.js`);
+  component.classList.add(...pageClasses)
+  document.main.clear().append(component)
+  !hash && removeHash()  
+}
+
+
+routes.add("about", () => {
+  setPage('about')
+});
+
+routes.add("blog-post", (kwargs, ...args) => {
+  console.log(`blog-post route running with kwargs '${kwargs}' and args '${args}'.`);
 });
 
 
-routes.add("home", (kwargs, ...args) => {
-  document.main.clear().append(home)
+routes.add("home", () => {
+  setPage('home')
 
 });
 
-routes.add("login", (kwargs, ...args) => {
-  console.log(`login route running with kwargs '${kwargs}' and args '${args}'.`);
+routes.add("login", () => {
+  setPage('login')
 });
+
+
+
 
 
 
