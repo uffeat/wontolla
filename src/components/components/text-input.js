@@ -19,7 +19,8 @@ class TextInput extends mixin(HTMLElement) {
     this.subs.input.id = uid.gen("textInput");
     this.subs.label.setAttr("for", this.subs.input.id);
     // Set defaults
-    this.size = 3
+    
+    //this.size = 3
   }
 
   connectedCallback() {

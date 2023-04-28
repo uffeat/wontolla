@@ -1,4 +1,5 @@
-<form novalidate class="row g-3 mb-3" data-name="form"></form>
-<x-alert data-name="alert"></x-alert>
-<div class="mb-3 d-none" data-name="slot"></div>
-<menu class="mt-2 d-flex column-gap-2" data-name="menu"></menu>
+<form novalidate class="mb-3 pink w-100" data-x="form">
+  <slot class="d-flex" data-x="slot"></slot>
+</form>
+<slot name="alert" class="mb-3 d-none" data-x="alertSlot"></slot>
+<menu class="mt-2 d-flex column-gap-2" data-x="menu"></menu>
