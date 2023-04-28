@@ -11,12 +11,7 @@ const styles = [
 
 const pageClasses = ["container", "max-width-lg", "my-3"];
 
-/** Returns a list of CSS 'col' classes by index. */
-const getColClasses = (index) => {
-  // TODO: Expand `classes` with indices 1-5.
-  const classes = { 3: ["col-md-6", "col-lg-4"] };
-  return classes[index];
-}
+
 
 /** Validates `style`. */
 function _validateStyle(style) {
@@ -44,7 +39,6 @@ function setStyle(element, prefix, style, clear = true) {
 
 export {
   pageClasses,
-  getColClasses,
   clearStyles,
   setStyle,
 };

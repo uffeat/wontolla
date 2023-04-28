@@ -1,6 +1,5 @@
-<form novalidate class="mb-3 w-100" data-x="form">
-  <slot class="d-flex flex-wrap column-gap-3" data-x="slot"></slot>
-  <slot name="alert" class="mb-3" data-x="alertSlot"></slot>
-</form>
-
-<menu class="mt-2 d-flex column-gap-2" data-x="menu"></menu>
+<form novalidate class="row mb-3" data-x="form"></form>
+<x-alert class="row" data-x="alert"></x-alert>
+<menu class="ps-0 d-flex column-gap-2" data-x="menu">
+  <button class="btn btn-primary" data-x="submitButton">Submit</button>
+</menu>

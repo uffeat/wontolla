@@ -1,24 +1,19 @@
-x-form x-text-input {
-  width: 100%;
+@media (min-width: 576px) {
+
 }
 
-@media (min-width: 576px) {
-  x-form x-text-input {
-    max-width: 45%;
-  }
+@media (min-width: 768px) {
 
-  x-form x-alert {
-    max-width: 45%;
-  }
 }
 
 @media (min-width: 992px) {
-  x-form x-text-input {
-    width: 400px;
-  }
 
-  x-form x-alert {
-    width: 400px;
-  }
 }
 
+@media (min-width: 1200px) {
+
+}
+
+@media (min-width: 1400px) {
+
+}

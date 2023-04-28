@@ -6,7 +6,6 @@ import { getColClasses } from "../../libs/bootstrap/utils/classes.js";
 
 class TextInput extends mixin(HTMLElement) {
   #customInvalidFeedback;
-  #size
   constructor() {
     super();
     // Init compositions
@@ -20,7 +19,6 @@ class TextInput extends mixin(HTMLElement) {
     this.subs.label.setAttr("for", this.subs.input.id);
     // Set defaults
     
-    //this.size = 3
   }
 
   connectedCallback() {
@@ -80,17 +78,7 @@ class TextInput extends mixin(HTMLElement) {
     this.subs.requiredMessage.classList[required ? "remove" : "add"]("d-none");
   }
 
-  get size() {
-    return this.#size;
-  }
 
-  set size(size) {
-    if (this.#size) {
-      this.root.classList.add(...getColClasses(this.#size))
-    }
-    this.root.classList.add(...getColClasses(size))
-    this.#size = size;
-  }
 
   get type() {
     return this.subs.input.type;

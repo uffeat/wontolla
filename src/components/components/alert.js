@@ -11,6 +11,7 @@ class Alert extends mixin(HTMLElement) {
     composeSubs(this);
     // Set defaults.
     this.styleName = "info";
+
   }
 
   connectedCallback() {
