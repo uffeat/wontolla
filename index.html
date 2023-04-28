@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sandbox Vanilla</title>
+    <link rel="shortcut icon" href="#" type="image/x-icon" />
+    <!--Extend prototypes and add aliases.-->
+    <script type="module" src="../src/js/upgrade.js"></script>
+    <!--UiKit-->
+    <link rel="stylesheet" href="../src/libs/uikit/core.css" />
+    <link rel="stylesheet" href="../src/libs/uikit/custom.css" />
+    <script src="../src/libs/uikit/core.js"></script>
+    <script src="../src/libs/uikit/icons.js"></script>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="../src/libs/bootstrap/core.css" />
+    <link rel="stylesheet" href="../src/libs/bootstrap/custom.css" />
+    <script src="../src/libs/bootstrap/core.js"></script>
+    <!--App-->
+    <link rel="stylesheet" href="../src/styles/app.css" />
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <header>
+        <x-navbar id="navbar"> </x-navbar>
+      </header>
+      <main></main>
+      <footer></footer>
+    </div>
+  </body>
+</html>
