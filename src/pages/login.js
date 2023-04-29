@@ -23,5 +23,18 @@ const passwordComponent = createElement('x-text-input.col-md-6', {
 });
 
 component.subs.form.add(emailComponent, passwordComponent)
+component.subs.form.showValid = false
+
+component.subs.form.action = (form) => {
+  console.log(`action running`)
+
+  if (!form.validate()) {
+    console.log(`Form is invalid.`)
+    return
+  }
+
+
+}
+
 
 export { component };

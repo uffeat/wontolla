@@ -4,7 +4,7 @@ import { composeRoot } from "../compositions/root.js";
 import * as _alert from "./alert.js";
 
 class Form extends mixin(HTMLElement) {
-  #action
+  #action;
   constructor() {
     super();
     composeRoot(this, { html: "components/form", cssClasses: ["container"] });
@@ -13,16 +13,14 @@ class Form extends mixin(HTMLElement) {
 
     // Expose alert component to public interface (other than via `subs`)
     this.alert = this.subs.alert;
-    
+
     this.alert.hide();
 
-    this.subs.submitButton.addEventListener('click', (event) => {
+    this.subs.submitButton.addEventListener("click", (event) => {
       if (this.action) {
-        this.action(this)
+        this.action(this);
       }
-    })
-
-
+    });
   }
 
   connectedCallback() {
@@ -30,20 +28,21 @@ class Form extends mixin(HTMLElement) {
   }
 
   get action() {
-    return this.#action
+    return this.#action;
   }
 
   set action(action) {
-    this.#action = action
+    this.#action = action;
   }
 
   get controls() {
-    return [...this.root.getAll("x-text-input"), ...this.root.getAll("x-checkbox")];
+    return [
+      ...this.root.getAll("x-text-input"),
+      ...this.root.getAll("x-checkbox"),
+    ];
   }
 
-  set controls(_) {
-
-  }
+  set controls(_) {}
 
   get data() {
     const data = {};
@@ -61,6 +60,23 @@ class Form extends mixin(HTMLElement) {
     });
   }
 
+  get showValid() {
+    return !this.subs.form.classList.contains("no-show-valid")
+  }
+
+  set showValid(showValid) {
+    this.subs.form.classList[showValid ? 'remove': 'add']("no-show-valid")
+  }
+
+  get valid() {
+    return this.subs.form.checkValidity();
+  }
+
+  set valid(_) {
+    throw `'valid' is read-only.`
+
+  }
+
   add(...controls) {
     this.subs.form.append(...controls);
   }
@@ -69,19 +85,30 @@ class Form extends mixin(HTMLElement) {
     this.subs.form.clear();
   }
 
-  validate(customValidator, customInvalidFeedbacks) {
-    this.subs.form.classList.add('needs-validation')
+  validate(customValidator) {
+    this.subs.form.classList.add("needs-validation");
 
-    
+    if (customValidator) {
+      customValidator()
+    }
 
-    this.subs.form.checkValidity()
+    this.subs.form.checkValidity();
 
+    this.controls.forEach((control) => {
+      control.setInvalidFeedbackFromValidity();
 
-    this.subs.form.classList.add('was-validated')
+      if (!control.valid) {
+        console.log(`Name of invalid control: ${control.name}`)
+      }
+    });
+
+    this.subs.form.classList.add("was-validated");
+
+    return this.valid
   }
 
   resetValidation() {
-    this.subs.form.classList.remove('was-validated')
+    this.subs.form.classList.remove("was-validated");
   }
 }
 
