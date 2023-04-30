@@ -23,10 +23,10 @@ const EventHandlerMixin = (Parent) => {
     /** Deregisters (bound) event handler from `target`. */
     removeEventHandler = (eventType, unBoundHandler, target = this) => {
       const boundHandlerName = EventHandler.#genBoundHandlerName(unBoundHandler);
-      if (!(boundHandlerName in this)) {
-        throw `Bound event handler '${boundHandlerName}' not found. Must first be created via 'addEventListener'.`
+      if (boundHandlerName in this) {
+        target.removeEventListener(eventType, this[boundHandlerName]);
       };
-      target.removeEventListener(eventType, this[boundHandlerName]);
+      
     };
     // `removeEventHandler` is a conveniece feature; since a bound method is
     // added to `this` removeEventListener could be used for that method

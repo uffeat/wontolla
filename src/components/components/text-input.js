@@ -3,11 +3,11 @@ import { mixin } from "../utils/mixin.js";
 import { composeSubs } from "../compositions/subs.js";
 import { composeRoot } from "../compositions/root.js";
 import { EventHandlerMixin } from "../mixins/event-handler.js";
+import { SyncAttrMixin } from "../mixins/sync-attr.js";
 
-
-class TextInput extends mixin(HTMLElement, EventHandlerMixin) {
+class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
   #customInvalidFeedback;
-  #liveValidation
+  #liveValidation;
   constructor() {
     super();
     // Init compositions
@@ -16,16 +16,19 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin) {
       cssClasses: ["form-floating", "mb-3"],
     });
     composeSubs(this);
-    // Link labal and input
+    // Link label and input
     this.subs.input.id = uid.gen("textInput");
     this.subs.label.setAttr("for", this.subs.input.id);
     // Set defaults
-    
   }
 
   connectedCallback() {
     this.addRoot();
+    // Make component DOM-searchable by name
+    this.syncAttr("name");
   }
+
+  // TODO Merge with customValidity
 
   get customInvalidFeedback() {
     return this.#customInvalidFeedback;
@@ -64,16 +67,25 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin) {
   }
 
   get liveValidation() {
-    return this.#liveValidation
+    return this.#liveValidation;
   }
 
   set liveValidation(liveValidation) {
     if (liveValidation) {
-      this.addEventHandler('input', this.setInvalidFeedbackFromValidity, this.subs.input)
+      this.addEventHandler(
+        "input",
+        this.setInvalidFeedbackFromValidity,
+        this.subs.input
+      );
     } else {
-      this.removeEventHandler && this.removeEventHandler('input', this.setInvalidFeedbackFromValidity, this.subs.input)
+      this.removeEventHandler &&
+        this.removeEventHandler(
+          "input",
+          this.setInvalidFeedbackFromValidity,
+          this.subs.input
+        );
     }
-    this.#liveValidation = liveValidation
+    this.#liveValidation = liveValidation;
   }
 
   get name() {
@@ -82,6 +94,8 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin) {
 
   set name(name) {
     this.subs.input.name = name;
+    // Make component DOM-searchable by name
+    this.syncAttr("name");
   }
 
   get required() {
@@ -92,8 +106,6 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin) {
     this.subs.input.required = required;
     this.subs.requiredMessage.classList[required ? "remove" : "add"]("d-none");
   }
-
-
 
   get type() {
     return this.subs.input.type;
@@ -120,9 +132,7 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin) {
   }
 
   setInvalidFeedbackFromValidity() {
-
-    console.log(`setInvalidFeedbackFromValidity running`)
-
+    console.log(`setInvalidFeedbackFromValidity running`);
 
     if (this.subs.input.validity.valueMissing) {
       this.invalidFeedback = "Required";

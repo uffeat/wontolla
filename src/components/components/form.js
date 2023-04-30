@@ -9,18 +9,20 @@ class Form extends mixin(HTMLElement) {
     super();
     composeRoot(this, { html: "components/form", cssClasses: ["container"] });
     composeSubs(this);
-    // `this.subs.form` has class `row`, i.e., added elements can be styles with col-classes.
+    // `this.subs.form` has class `row`; added control can be styled with col-classes.
 
     // Expose alert component to public interface (other than via `subs`)
     this.alert = this.subs.alert;
 
-    this.alert.hide();
-
+    // Set event handlers
     this.subs.submitButton.addEventListener("click", (event) => {
       if (this.action) {
         this.action(this);
       }
     });
+
+    // Set init state
+    this.alert.hide();
   }
 
   connectedCallback() {
@@ -36,13 +38,13 @@ class Form extends mixin(HTMLElement) {
   }
 
   get controls() {
-    return [
-      ...this.root.getAll("x-text-input"),
-      ...this.root.getAll("x-checkbox"),
-    ];
+    return this.root.getAll(".x-control");
   }
 
-  set controls(_) {}
+  set controls(controls) {
+    this.clear();
+    this.add(...controls);
+  }
 
   get data() {
     const data = {};
@@ -61,11 +63,11 @@ class Form extends mixin(HTMLElement) {
   }
 
   get showValid() {
-    return !this.subs.form.classList.contains("no-show-valid")
+    return !this.subs.form.classList.contains("no-show-valid");
   }
 
   set showValid(showValid) {
-    this.subs.form.classList[showValid ? 'remove': 'add']("no-show-valid")
+    this.subs.form.classList[showValid ? "remove" : "add"]("no-show-valid");
   }
 
   get valid() {
@@ -73,11 +75,14 @@ class Form extends mixin(HTMLElement) {
   }
 
   set valid(_) {
-    throw `'valid' is read-only.`
-
+    throw `'valid' is read-only.`;
   }
 
   add(...controls) {
+    controls = controls.map((control) => {
+      control.classList.add("x-control", 'col-md-6');
+      return control;
+    });
     this.subs.form.append(...controls);
   }
 
@@ -85,34 +90,41 @@ class Form extends mixin(HTMLElement) {
     this.subs.form.clear();
   }
 
+  getControl(name) {
+    return this.subs.form.get(`.x-control[name=${name}]`);
+  }
+
+  getValue(name) {
+    const control = this.getControl(name);
+    if (control) return control.value;
+  }
+
+  resetValidation() {
+    this.subs.form.classList.remove("was-validated");
+  }
+
   validate(customValidator) {
     this.subs.form.classList.add("needs-validation");
 
     if (customValidator) {
-      customValidator()
+      customValidator();
     }
 
     this.subs.form.checkValidity();
 
     this.controls.forEach((control) => {
-      
-
       if (!control.valid) {
         control.setInvalidFeedbackFromValidity();
-        control.liveValidation = true
-        console.log(`Name of invalid control: ${control.name}`)
+        control.liveValidation = true;
+        console.log(`Name of invalid control: ${control.name}`);
       } else {
-        control.liveValidation = false
+        control.liveValidation = false;
       }
     });
 
     this.subs.form.classList.add("was-validated");
 
-    return this.valid
-  }
-
-  resetValidation() {
-    this.subs.form.classList.remove("was-validated");
+    return this.valid;
   }
 }
 

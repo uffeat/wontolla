@@ -26,12 +26,25 @@ component.subs.form.add(emailComponent, passwordComponent)
 component.subs.form.showValid = false
 
 component.subs.form.action = (form) => {
-  console.log(`action running`)
+  //console.log(`action running`)
 
   if (!form.validate()) {
-    console.log(`Form is invalid.`)
+    console.log(`Form did not pass basic validation.`)
     return
   }
+
+  if (form.getValue('email')!=='a@a' || form.getValue('password')!=='a') {
+    console.log(`Invalid credentials.`)
+    const emailControl = form.getControl('email') 
+    emailControl.customInvalidFeedback = 'Invalid credentials'
+    emailControl.customValidity = false
+
+    return
+  }
+
+
+
+  console.log(`Form is valid.`)
 
 
 }
