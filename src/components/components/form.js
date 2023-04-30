@@ -80,7 +80,7 @@ class Form extends mixin(HTMLElement) {
 
   add(...controls) {
     controls = controls.map((control) => {
-      control.classList.add("x-control", 'col-md-6');
+      control.classList.add("x-control", "col-md-6");
       return control;
     });
     this.subs.form.append(...controls);
@@ -100,23 +100,23 @@ class Form extends mixin(HTMLElement) {
   }
 
   resetValidation() {
+    this.alert.hide();
     this.subs.form.classList.remove("was-validated");
   }
 
-  validate(customValidator) {
-    this.subs.form.classList.add("needs-validation");
+  validate(kwargs = {}) {
+    //const {  } = kwargs;
+    //this.resetValidation()
 
-    if (customValidator) {
-      customValidator();
-    }
+    this.subs.form.classList.add("needs-validation");
 
     this.subs.form.checkValidity();
 
     this.controls.forEach((control) => {
       if (!control.valid) {
         control.setInvalidFeedbackFromValidity();
+
         control.liveValidation = true;
-        console.log(`Name of invalid control: ${control.name}`);
       } else {
         control.liveValidation = false;
       }

@@ -1,7 +1,7 @@
 class FuncStore {
   #reg = {};
   constructor() {
-    this._reg = {}
+    this._reg = {};
   }
 
   add(key, func) {
@@ -9,7 +9,6 @@ class FuncStore {
       throw `A function is already registered with key: ${key}.`;
     }
     this.#reg[key] = func;
-    this._reg[key] = func;
   }
 
   remove(key) {
@@ -32,9 +31,7 @@ class FuncStore {
   }
 
   getKeys() {
-    
-    
-    return Object.keys(this.#reg)
+    return Object.keys(this.#reg);
   }
 }
 

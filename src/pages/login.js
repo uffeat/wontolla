@@ -1,53 +1,59 @@
+import { state } from "../state.js";
 import * as _form from "../components/components/form.js";
 import * as _textInput from "../components/components/text-input.js";
 import { composeSubs } from "../components/compositions/subs.js";
-
 
 const component = createElement("div.login", {
   innerHTML: getHtml("pages/login"),
 });
 composeSubs(component);
 
-const emailComponent = createElement('x-text-input.col-md-6', {
+const emailComponent = createElement("x-text-input.col-md-6", {
   name: "email",
   type: "email",
   label: "Email",
   required: true,
 });
 
-const passwordComponent = createElement('x-text-input.col-md-6', {
+const passwordComponent = createElement("x-text-input.col-md-6", {
   name: "password",
   type: "password",
   label: "Password",
   required: true,
 });
 
-component.subs.form.add(emailComponent, passwordComponent)
-component.subs.form.showValid = false
+component.subs.form.add(emailComponent, passwordComponent);
+component.subs.form.showValid = false;
 
 component.subs.form.action = (form) => {
-  //console.log(`action running`)
+  
+  // Basic validation.
 
   if (!form.validate()) {
-    console.log(`Form did not pass basic validation.`)
-    return
+    console.log(`Form did not pass basic validation.`);
+    return;
   }
 
-  if (form.getValue('email')!=='a@a' || form.getValue('password')!=='a') {
-    console.log(`Invalid credentials.`)
-    const emailControl = form.getControl('email') 
-    emailControl.customInvalidFeedback = 'Invalid credentials'
-    emailControl.customValidity = false
+  // Credentials validation.
 
-    return
+  if (emailComponent.value !== "a@a" || passwordComponent.value !== "a") {
+    console.log(`Invalid credentials.`);
+    emailComponent.customValidity = passwordComponent.customValidity =
+      "Invalid credentials";
+
+    emailComponent.customOnInput = passwordComponent.customOnInput = () => {
+      emailComponent.customValidity = passwordComponent.customValidity = true;
+    };
+
+    form.alert.show("Invalid credentials");
+
+    form.validate();
+    return;
   }
 
-
-
-  console.log(`Form is valid.`)
-
-
-}
-
+  form.resetValidation();
+  console.log(`Form is valid.`);
+  state.setValue('loggedin', true)
+};
 
 export { component };

@@ -43,12 +43,12 @@ class Alert extends mixin(HTMLElement) {
     setStyle(this.root, "alert", styleName);
   }
 
-  showAlert(content, kwargs = {}) {
+  show(content, kwargs = {}) {
     const [headline, styleName] = getArgs(kwargs, "headline", "styleName");
     this.content = content;
     if (headline) this.headline = headline;
     if (styleName) this.styleName = styleName;
-    this.show();
+    this.classList.remove('d-none');
   }
 }
 
@@ -57,7 +57,7 @@ window.customElements.define("x-alert", Alert);
 
 /* EXAMPLE
 
-const alert1 = X.element.create("x-alert", {
+const alert1 = createElement("x-alert", {
   content: "Some content...",
   headline: "Cool headline",
   styleName: "primary",
@@ -65,7 +65,7 @@ const alert1 = X.element.create("x-alert", {
 });
 
 
-alert1.showAlert("New content", {
+alert1.show("New content", {
   headline: "New headline",
   styleName: "danger",
 });

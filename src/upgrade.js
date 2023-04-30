@@ -231,10 +231,12 @@ Object.defineProperty(Node.prototype, "text", {
 // ATTRS
 
 function setAttr(name, value) {
-  if (value) {
-    this.setAttribute(name, value);
-  } else {
+  if (value === null) {
     this.removeAttribute(name);
+  } else if (value === undefined) {
+    this.setAttribute(name, '');
+  } else {
+    this.setAttribute(name, value);
   }
 }
 
@@ -314,3 +316,51 @@ function hide() {
 
 HTMLElement.prototype.hide = hide;
 ShadowRoot.prototype.hide = hide;
+
+
+// STRING
+
+// NOTE: The added string methods below do NOT change the original string.
+
+const capitalize = (text) => {
+  if (text.length > 0) {
+    text = text[0].toUpperCase() + text.slice(1);
+  }
+  return text
+}
+
+
+String.prototype.capitalize = function() {
+  return capitalize(this)
+}
+
+const uncapitalize = (text) => {
+  if (text.length > 0) {
+    text = text[0].toLowerCase() + text.slice(1);
+  }
+  return text
+}
+
+String.prototype.uncapitalize = function() {
+  return uncapitalize(this)
+}
+
+const toCamel = (kebab) => {
+  return kebab.replace(/-([a-z])/g, function (match, capture) {
+    return capture.toUpperCase();
+  });
+}
+
+String.prototype.toCamel = function() {
+  return toCamel(this)
+}
+
+
+const toKebab = (camel) => {
+  return camel.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+String.prototype.toKebab = function() {
+  return toKebab(this)
+}
+

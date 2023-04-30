@@ -7,6 +7,7 @@ import { SyncAttrMixin } from "../mixins/sync-attr.js";
 
 class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
   #customInvalidFeedback;
+  #customOnInput;
   #liveValidation;
   constructor() {
     super();
@@ -28,8 +29,6 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
     this.syncAttr("name");
   }
 
-  // TODO Merge with customValidity
-
   get customInvalidFeedback() {
     return this.#customInvalidFeedback;
   }
@@ -38,15 +37,30 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
     this.#customInvalidFeedback = customInvalidFeedback;
   }
 
+  get customOnInput() {
+    return this.#customOnInput;
+  }
+
+  set customOnInput(customOnInput) {
+    this.#customOnInput = customOnInput;
+  }
+
   get customValidity() {
     return this.subs.input.validity.customError;
   }
 
   set customValidity(customValidity) {
-    if (![true, false].includes(customValidity)) {
-      throw `Invalid value for 'customValidity': ${customValidity}. Must be Boolean.`;
+    if (customValidity === true) {
+      this.subs.input.setCustomValidity("");
+      this.customInvalidFeedback = "";
+    } else if (customValidity === false) {
+      this.subs.input.setCustomValidity(" ");
+      this.customInvalidFeedback = "";
+    } else {
+      // customValidity is a string.
+      this.subs.input.setCustomValidity(customValidity);
+      this.customInvalidFeedback = customValidity;
     }
-    this.subs.input.setCustomValidity(customValidity ? "" : " ");
   }
 
   get invalidFeedback() {
@@ -71,20 +85,12 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
   }
 
   set liveValidation(liveValidation) {
-    if (liveValidation) {
-      this.addEventHandler(
-        "input",
-        this.setInvalidFeedbackFromValidity,
-        this.subs.input
-      );
-    } else {
-      this.removeEventHandler &&
-        this.removeEventHandler(
-          "input",
-          this.setInvalidFeedbackFromValidity,
-          this.subs.input
-        );
-    }
+    this[liveValidation ? "addEventHandler" : "removeEventHandler"](
+      "input",
+      this._oninput,
+      this.subs.input
+    );
+
     this.#liveValidation = liveValidation;
   }
 
@@ -141,6 +147,12 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
     } else if (this.subs.input.validity.customError) {
       this.invalidFeedback = this.customInvalidFeedback || "Invalid";
     }
+  }
+
+  _oninput() {
+    console.log(`oninput running`);
+    this.customOnInput && this.customOnInput();
+    this.setInvalidFeedbackFromValidity();
   }
 }
 
