@@ -3,11 +3,13 @@ import { pageClasses } from '../libs/bootstrap/utils/classes.js';
 import { removeHash } from '../utils/url.js';
 
 
-const setPage = async (name, hash=true) => {
+const setPage = async (name, kwargs = {}) => {
+  const {noHash} = kwargs
+  noHash && removeHash()
   const {component} = await import(`../pages/${name}.js`);
   component.classList.add(...pageClasses)
   document.main.clear().append(component)
-  !hash && removeHash()  
+   
 }
 
 
@@ -26,8 +28,13 @@ routes.add("home", () => {
 });
 
 routes.add("login", () => {
-  setPage('login', false)
+  setPage('login', {noHash: true})
 });
+
+routes.add("signup", () => {
+  setPage('signup', {noHash: true})
+});
+
 
 
 

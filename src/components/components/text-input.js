@@ -1,10 +1,13 @@
+import { uid } from "../../utils/uid.js";
 import { mixin } from "../utils/mixin.js";
 import { composeSubs } from "../compositions/subs.js";
 import { composeRoot } from "../compositions/root.js";
-import { uid } from "../../utils/uid.js";
+import { EventHandlerMixin } from "../mixins/event-handler.js";
 
-class TextInput extends mixin(HTMLElement) {
+
+class TextInput extends mixin(HTMLElement, EventHandlerMixin) {
   #customInvalidFeedback;
+  #liveValidation
   constructor() {
     super();
     // Init compositions
@@ -60,6 +63,19 @@ class TextInput extends mixin(HTMLElement) {
     this.subs.input.placeholder = label;
   }
 
+  get liveValidation() {
+    return this.#liveValidation
+  }
+
+  set liveValidation(liveValidation) {
+    if (liveValidation) {
+      this.addEventHandler('input', this.setInvalidFeedbackFromValidity, this.subs.input)
+    } else {
+      this.removeEventHandler && this.removeEventHandler('input', this.setInvalidFeedbackFromValidity, this.subs.input)
+    }
+    this.#liveValidation = liveValidation
+  }
+
   get name() {
     return this.subs.input.name;
   }
@@ -104,6 +120,10 @@ class TextInput extends mixin(HTMLElement) {
   }
 
   setInvalidFeedbackFromValidity() {
+
+    console.log(`setInvalidFeedbackFromValidity running`)
+
+
     if (this.subs.input.validity.valueMissing) {
       this.invalidFeedback = "Required";
     } else if (this.subs.input.validity.typeMismatch) {

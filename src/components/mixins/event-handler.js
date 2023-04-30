@@ -14,7 +14,7 @@ const EventHandlerMixin = (Parent) => {
       // Create bound handler.
       const boundHandler = unBoundHandler.bind(this);
       // Add bound handler to component for later retrival (dereg purposes).
-      this[EventHandler.#genBoundHandlerName(handler)] = boundHandler;
+      this[EventHandler.#genBoundHandlerName(unBoundHandler)] = boundHandler;
 
       target.addEventListener(eventType, boundHandler);
       return boundHandler;

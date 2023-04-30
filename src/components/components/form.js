@@ -95,10 +95,14 @@ class Form extends mixin(HTMLElement) {
     this.subs.form.checkValidity();
 
     this.controls.forEach((control) => {
-      control.setInvalidFeedbackFromValidity();
+      
 
       if (!control.valid) {
+        control.setInvalidFeedbackFromValidity();
+        control.liveValidation = true
         console.log(`Name of invalid control: ${control.name}`)
+      } else {
+        control.liveValidation = false
       }
     });
 
