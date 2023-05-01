@@ -41,10 +41,6 @@ class State {
     const selector = `*[${key.toKebab()}-subscriber]`
     document.getAll(selector).forEach(element => {
       const methodName = `render${key.capitalize()}`
-
-      console.log(`Looking for method name ${methodName}`)
-
-
       element[methodName] && element[methodName](this.getValue(key))
     })
     if (!(key in this.#subscribers)) {
